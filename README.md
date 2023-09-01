@@ -2,5 +2,5 @@
 
 Para o dia 05/10
 
-BOM DIAAAAAAAAAAAAAAAAAAAAA
+coloca  privado a ação de avaliar
 
