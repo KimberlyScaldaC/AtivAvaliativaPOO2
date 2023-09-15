@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// AQUI VAI FICAR A PARTE DO BANCO DE DADOS
+
+model Usuario {
+  matricula Int @id @unique
+  email String @unique
+  nome String
+  idade Int
+}
+
+//  author    User    @relation(fields: [authorId], references: [id])
+
+model AlunoAvaliacao {
+  avaliacao1 Avaliacao @relation(fields: [avaliacaoId1], references: [id])
+  avaliacaoId1 Int @unique
+  avaliacao2 Avaliacao @relation(fields: [avaliacaoId2], references: [id])
+  avaliacaoId2 Int @unique
+  matriculaAluno Int
+  avaliacaoAluno Int
+}
+
+model ProfessorAvaliacao {
+ 
+  matriculaProfessor Int
+  avaliacaoProfessor Int
+}
+
+model Avaliacao {
+  id Int @id @unique @default(autoincrement())
+  idEstande Int
+  avaliacaoAlunos AlunoAvaliacao[] @relation("avaliacaoId1")
+  matriculaAlunos AlunoAvaliacao[]
+}
+
+model Estande {
+  id Int @id @unique @default(autoincrement())
+  nomeGrupo String
+  dataApresentacao DateTime
+  horaApresentacao DateTime
+  notaGrupoProfessores Float
+  notaGrupoAlunos Float
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
