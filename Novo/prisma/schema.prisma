@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+//-------------------------------------------------------------
+
+// AQUI VAI FICAR A PARTE DO BANCO DE DADOS
+
+model Aluno {
+  idAluno   String @id @default(uuid())
+  matricula Int    @unique
+  email     String @unique
+  nome      String
+  avaliacoes AlunoAvaliacao[]
+
+  // Ligaçao com a classe Grupo para o lider
+  grupo Grupo? @relation("Lideranca")
+
+  // Ligaçao com a classe Grupo para o lider
+  grupoAlunos Grupo @relation("Composicao", fields: [grupoId], references: [idGrupo])
+  grupoId String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model AlunoAvaliacao {
+  aluno Aluno @relation(fields: [alunoId], references: [idAluno])
+  alunoId String
+  avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [idAvaliacao])
+  avaliacaoId String
+
+  @@id([alunoId, avaliacaoId])
+}
+
+model Professor {
+  idProfessor String @id @default(uuid())
+  matricula   Int    @unique
+  email       String @unique
+  nome        String
+  avaliacoes ProfessorAvaliacao[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model ProfessorAvaliacao {
+  professor Professor @relation(fields: [professorId], references: [idProfessor])
+  professorId String
+  avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [idAvaliacao])
+  avaliacaoId String
+
+  @@id([professorId, avaliacaoId])
+}
+
+model Avaliacao {
+  idAvaliacao   String @id @default(uuid())
+
+  // Ligaçao com a classe Aluno com uma relação -> muitos-para-muitos
+  alunos AlunoAvaliacao[]
+  notaAluno     Int
+  // Ligaçao com a classe Professor com uma relação -> muitos-para-muitos
+  professores ProfessorAvaliacao[]
+  notaProfessor Int
+
+  // Ligaçao com a classe Estande com uma relação -> um-para-muitos
+  estande Estande @relation(fields: [estandeId], references: [idEstande])
+  estandeId String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model Grupo {
+  idGrupo  String @id @default(uuid())
+  // Ligaçao com a classe Aluno com uma relação -> um-para-muitos
+  lider Aluno @relation("Lideranca", fields: [liderId], references: [idAluno])
+  liderId String @unique 
+
+  // Ligaçao com a classe Aluno Para os instegrantes do grupo
+  alunos Aluno[] @relation("Composicao")
+
+  //  post
+  // Ligaçao com a classe Estande Para os instegrantes do grupo com uma relacao -> um-para-muitos
+  estande Estande @relation("estande",fields: [estandeId], references: [idEstande])
+  estandeId String
+
+  // Ligaçao com a classe Estande Para o lider do grupo com uma relacao -> um-para-um
+  liderEstande Estande?
+
+}
+
+
+model Estande {
+  idEstande            String @id @default(uuid())
+  integrantes Grupo[]         @relation("estande")
+  lider       Grupo           @relation( fields: [liderId], references: [idGrupo])
+  liderId              String @unique
+  numeroEstande        Int
+  nomeGrupo            String
+  dataApresentacao     DateTime
+  horaApresentacao     DateTime
+  notaGrupoProfessores Float
+  notaGrupoAlunos      Float
+  avaliacoes  Avaliacao[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+//-------------------------------------------------------------
+
+
+//-------------------------------------------------------------
+
+// model User {
+//   id    Int     @id @default(autoincrement())
+//   email String  @unique
+//   name  String?
+//   posts Post[]
+// }
+
+// model Post {
+//   id        Int     @id @default(autoincrement())
+//   title     String
+//   content   String?
+//   published Boolean @default(false)
+//   author    User    @relation(fields: [authorId], references: [id])
+//   authorId  Int
+// }
+
+//----------------------------------------------------- SITES -->
+
+// https://github.com/prisma/prisma/discussions/13341
+// https://www.prisma.io/docs/concepts/components/prisma-schema/relations
+
+//-------------------------------------------------------------
