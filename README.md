@@ -2,4 +2,4 @@
 
 ## Para o dia 05/10
 
-# Oque falta fazer ->
+- Falta fazer a descrição do minimundo no diagrama
