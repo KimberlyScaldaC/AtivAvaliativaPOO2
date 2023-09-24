@@ -10,6 +10,5 @@
   ##### criado_em DateTime @default(now())<br>
   vai pegar o tempo da criação do post feita <br>
   ##### mudado_em DateTime @updatedAt<br>
-  vai pegar as próximas alterações feitas no post<br>
-  com o tempo feito<br>
-  *isso em model Post no arquivo schema.prisma 
+  vai pegar as próximas alterações feitas no post com o tempo feito<br>
+ 
