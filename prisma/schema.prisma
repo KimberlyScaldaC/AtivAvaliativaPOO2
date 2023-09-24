@@ -66,4 +66,9 @@ model Post {
   published Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
+  //aqui ela vai pegar o tempo criado do post 
+  criado_em DateTime @default(now())
+  //aqui ela vai indicar caso algo tenha mudado no post 
+  //o tempo ira mudar 
+  mudado_em DateTime @updatedAt
 }
