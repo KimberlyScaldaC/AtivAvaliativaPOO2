@@ -6,7 +6,7 @@
 
 - pergunta para o professor oque fazer nessa situacao aonde eu quero o lider mais ja faço uma relacao com ele
 
-- Ideia colocada: função das duas <br>
+- Ideia colocada: função no schema.prisma em Post <br>
   ##### criado_em DateTime @default(now())<br>
   vai pegar o tempo da criação do post feita <br>
   ##### mudado_em DateTime @updatedAt<br>
