@@ -1,4 +1,4 @@
-## AtivAvaliativaPOO2
+## Atividade Avaliativa de POO2
 
 ## Para o dia 05/10
 
