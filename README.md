@@ -9,3 +9,5 @@
 - como deixar as linhas organizadas
 
 - precisa pelo menos 3 avaliacoes para os professores
+
+- trocar a relacao no prisma de avaliacao para estande
