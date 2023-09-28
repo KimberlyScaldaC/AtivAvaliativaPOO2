@@ -7,3 +7,5 @@
 - pergunta para o professor oque fazer nessa situacao aonde eu quero o lider mais ja faço uma relacao com ele
 
 - como deixar as linhas organizadas
+
+- precisa pelo menos 3 avaliacoes para os professores
