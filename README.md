@@ -11,3 +11,7 @@
 - precisa pelo menos 3 avaliacoes para os professores
 
 - trocar a relacao no prisma de avaliacao para estande
+
+- colocar em todas as classes ->
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
