@@ -5,3 +5,5 @@
 - como deixar as linhas organizadas
 
 - precisa pelo menos 3 avaliacoes para os professores
+
+- REGRAS DE NEGÓCIO ->
