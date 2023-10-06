@@ -39,6 +39,9 @@ model AlunoAvaliacao {
   avaliacaoId String
 
   @@id([alunoId, avaliacaoId])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
 
 model Professor {
@@ -59,6 +62,9 @@ model ProfessorAvaliacao {
   avaliacaoId String
 
   @@id([professorId, avaliacaoId])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
 
 model Avaliacao {
@@ -96,6 +102,8 @@ model Grupo {
   // Ligaçao com a classe Estande Para o lider do grupo com uma relacao -> um-para-um
   liderEstande Estande?
 
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
 
 
