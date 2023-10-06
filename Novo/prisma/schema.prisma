@@ -16,15 +16,18 @@ datasource db {
 
 model Aluno {
   idAluno   String @id @default(uuid())
+
   matricula Int    @unique
   email     String @unique
   nome      String
-  avaliacoes AlunoAvaliacao[]
+
+  // Ligaçao com a classe Avaliacao com uma relação -> muitos-para-muitos
+  avaliacoes AlunoOnAvaliacao[]
 
   // Ligaçao com a classe Grupo para o lider
   grupo Grupo? @relation("Lideranca")
 
-  // Ligaçao com a classe Grupo para o lider
+  // Ligaçao com a classe Grupo para os componentes
   grupoAlunos Grupo @relation("Composicao", fields: [grupoId], references: [idGrupo])
   grupoId String
 
@@ -32,7 +35,7 @@ model Aluno {
   updated_at DateTime @default(now())
 }
 
-model AlunoAvaliacao {
+model AlunoOnAvaliacao {
   aluno Aluno @relation(fields: [alunoId], references: [idAluno])
   alunoId String
   avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [idAvaliacao])
@@ -46,16 +49,19 @@ model AlunoAvaliacao {
 
 model Professor {
   idProfessor String @id @default(uuid())
+
   matricula   Int    @unique
   email       String @unique
   nome        String
-  avaliacoes ProfessorAvaliacao[]
+
+  // Ligaçao com a classe Professor com uma relação -> muitos-para-muitos
+  avaliacoes ProfessorOnAvaliacao[]
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 }
 
-model ProfessorAvaliacao {
+model ProfessorOnAvaliacao {
   professor Professor @relation(fields: [professorId], references: [idProfessor])
   professorId String
   avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [idAvaliacao])
@@ -71,15 +77,26 @@ model Avaliacao {
   idAvaliacao   String @id @default(uuid())
 
   // Ligaçao com a classe Aluno com uma relação -> muitos-para-muitos
-  alunos AlunoAvaliacao[]
+  alunos AlunoOnAvaliacao[]
   notaAluno     Int
   // Ligaçao com a classe Professor com uma relação -> muitos-para-muitos
-  professores ProfessorAvaliacao[]
+  professores ProfessorOnAvaliacao[]
   notaProfessor Int
 
-  // Ligaçao com a classe Estande com uma relação -> um-para-muitos
+  // Ligaçao com a classe Estande com uma relação -> muitos-para-muitos
+  estande AvaliacaoOnEstande[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model AvaliacaoOnEstande {
+  avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [idAvaliacao])
+  avaliacaoId String
   estande Estande @relation(fields: [estandeId], references: [idEstande])
   estandeId String
+
+  @@id([avaliacaoId, estandeId])
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -87,6 +104,10 @@ model Avaliacao {
 
 model Grupo {
   idGrupo  String @id @default(uuid())
+
+  nomeGrupo String
+  matricula Int
+
   // Ligaçao com a classe Aluno com uma relação -> um-para-muitos
   lider Aluno @relation("Lideranca", fields: [liderId], references: [idAluno])
   liderId String @unique 
@@ -94,13 +115,9 @@ model Grupo {
   // Ligaçao com a classe Aluno Para os instegrantes do grupo
   alunos Aluno[] @relation("Composicao")
 
-  //  post
-  // Ligaçao com a classe Estande Para os instegrantes do grupo com uma relacao -> um-para-muitos
-  estande Estande @relation("estande",fields: [estandeId], references: [idEstande])
+  // Ligaçao com a classe Estande com uma relacao -> um-para-muitos
+  estande Estande @relation(fields: [estandeId], references: [idEstande])
   estandeId String
-
-  // Ligaçao com a classe Estande Para o lider do grupo com uma relacao -> um-para-um
-  liderEstande Estande?
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -109,22 +126,91 @@ model Grupo {
 
 model Estande {
   idEstande            String @id @default(uuid())
-  integrantes Grupo[]         @relation("estande")
-  lider       Grupo           @relation( fields: [liderId], references: [idGrupo])
-  liderId              String @unique
+
   numeroEstande        Int
-  nomeGrupo            String
   dataApresentacao     DateTime
   horaApresentacao     DateTime
   notaGrupoProfessores Float
   notaGrupoAlunos      Float
-  avaliacoes  Avaliacao[]
+  
+  // Ligaçao com a classe Grupo com uma relacao -> um-para-muitos
+  grupo Grupo[]
+  
+  // Ligaçao com a classe Avaliacao com uma relação -> muitos-para-muitos
+  avaliacoes  AvaliacaoOnEstande[]
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 }
 
 //-------------------------------------------------------------
+
+// model Aluno {
+//   idAluno   String @id @default(uuid())
+
+//   matricula Int    @unique
+//   email     String @unique
+//   nome      String
+
+//   // Ligaçao com a classe Avaliacao com uma relação -> muitos-para-muitos
+//   avaliacoes AlunoOnAvaliacao[]
+
+//   // Ligaçao com a classe Grupo para o lider
+//   grupo Grupo? @relation("Lideranca")
+
+//   // Ligaçao com a classe Grupo para o lider
+//   grupoAlunos Grupo @relation("Composicao", fields: [grupoId], references: [idGrupo])
+//   grupoId String
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @default(now())
+// }
+
+// model Grupo {
+//   idGrupo  String @id @default(uuid())
+
+//   nomeGrupo String
+//   matricula Int
+
+//   // Ligaçao com a classe Aluno com uma relação -> um-para-muitos
+//   lider Aluno @relation("Lideranca", fields: [liderId], references: [idAluno])
+//   liderId String @unique 
+
+//   // Ligaçao com a classe Aluno Para os instegrantes do grupo
+//   alunos Aluno[] @relation("Composicao")
+
+//   //  post
+//   // Ligaçao com a classe Estande Para os integrantes do grupo com uma relacao -> um-para-muitos
+//   estande Estande @relation("estande",fields: [estandeId], references: [idEstande])
+//   estandeId String
+
+//   // Ligaçao com a classe Estande Para o lider do grupo com uma relacao -> um-para-um
+//   liderEstande Estande?
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @default(now())
+// }
+
+
+// model Estande {
+//   idEstande            String @id @default(uuid())
+
+//   numeroEstande        Int
+//   dataApresentacao     DateTime
+//   horaApresentacao     DateTime
+//   notaGrupoProfessores Float
+//   notaGrupoAlunos      Float
+  
+//   integrantes Grupo[]         @relation("estande")
+//   lider       Grupo           @relation( fields: [liderId], references: [idGrupo])
+//   liderId              String @unique
+  
+//   // Ligaçao com a classe Avaliacao com uma relação -> muitos-para-muitos
+//   avaliacoes  AvaliacaoOnEstande[]
+
+//   created_at DateTime @default(now())
+//   updated_at DateTime @default(now())
+// }
 
 
 //-------------------------------------------------------------
