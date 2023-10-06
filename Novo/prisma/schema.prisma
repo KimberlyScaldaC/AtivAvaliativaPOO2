@@ -22,10 +22,10 @@ model Aluno {
   nome       String
 
   // Ligaçao com a classe Avaliacao com uma relação -> muitos-para-muitos
-  avaliacoes AlunoOnAvaliacao[]
+  avaliacoes  AlunoOnAvaliacao[]
 
   // Ligaçao com a classe Grupo para o lider com uma relação -> um para um
-  grupo Grupo?        @relation("Lideranca")
+  grupo       Grupo?  @relation("Lideranca")
 
   // Ligaçao com a classe Grupo para os componentes com uma relação -> um-para-muitos
   grupoAlunos Grupo   @relation("Composicao", fields: [grupoId], references: [idGrupo])
