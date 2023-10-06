@@ -15,21 +15,21 @@ datasource db {
 // AQUI VAI FICAR A PARTE DO BANCO DE DADOS
 
 model Aluno {
-  idAluno   String @id @default(uuid())
+  idAluno    String   @id @default(uuid())
 
-  matricula Int    @unique
-  email     String @unique
-  nome      String
+  matricula  Int      @unique
+  email      String   @unique
+  nome       String
 
   // Ligaçao com a classe Avaliacao com uma relação -> muitos-para-muitos
   avaliacoes AlunoOnAvaliacao[]
 
   // Ligaçao com a classe Grupo para o lider com uma relação -> um para um
-  grupo Grupo? @relation("Lideranca")
+  grupo Grupo?        @relation("Lideranca")
 
   // Ligaçao com a classe Grupo para os componentes com uma relação -> um-para-muitos
-  grupoAlunos Grupo @relation("Composicao", fields: [grupoId], references: [idGrupo])
-  grupoId String
+  grupoAlunos Grupo   @relation("Composicao", fields: [grupoId], references: [idGrupo])
+  grupoId    String
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -48,76 +48,76 @@ model AlunoOnAvaliacao {
 }
 
 model Professor {
-  idProfessor String @id @default(uuid())
+  idProfessor String  @id @default(uuid())
 
-  matricula   Int    @unique
-  email       String @unique
+  matricula   Int     @unique
+  email       String  @unique
   nome        String
 
   // Ligaçao com a classe Professor com uma relação -> muitos-para-muitos
   avaliacoes ProfessorOnAvaliacao[]
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
 }
 
 model ProfessorOnAvaliacao {
-  professor Professor @relation(fields: [professorId], references: [idProfessor])
+  professor Professor  @relation(fields: [professorId], references: [idProfessor])
   professorId String
-  avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [idAvaliacao])
+  avaliacao Avaliacao  @relation(fields: [avaliacaoId], references: [idAvaliacao])
   avaliacaoId String
 
   @@id([professorId, avaliacaoId])
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
 }
 
 model Avaliacao {
-  idAvaliacao   String @id @default(uuid())
+  idAvaliacao   String  @id @default(uuid())
 
   // Ligaçao com a classe Aluno com uma relação -> muitos-para-muitos
-  alunos AlunoOnAvaliacao[]
+  alunos      AlunoOnAvaliacao[]
   notaAluno     Int
   // Ligaçao com a classe Professor com uma relação -> muitos-para-muitos
   professores ProfessorOnAvaliacao[]
   notaProfessor Int
 
   // Ligaçao com a classe Estande com uma relação -> muitos-para-muitos
-  estande AvaliacaoOnEstande[]
+  estande     AvaliacaoOnEstande[]
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now())
 }
 
 model AvaliacaoOnEstande {
-  avaliacao Avaliacao @relation(fields: [avaliacaoId], references: [idAvaliacao])
+  avaliacao Avaliacao  @relation(fields: [avaliacaoId], references: [idAvaliacao])
   avaliacaoId String
-  estande Estande @relation(fields: [estandeId], references: [idEstande])
-  estandeId String
+  estande Estande      @relation(fields: [estandeId], references: [idEstande])
+  estandeId   String
 
   @@id([avaliacaoId, estandeId])
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
 }
 
 model Grupo {
-  idGrupo  String @id @default(uuid())
+  idGrupo   String    @id @default(uuid())
 
   nomeGrupo String
   matricula Int
 
   // Ligaçao com a classe Aluno com uma relação -> um para um
-  lider Aluno @relation("Lideranca", fields: [liderId], references: [idAluno])
-  liderId String @unique 
+  lider   Aluno       @relation("Lideranca", fields: [liderId], references: [idAluno])
+  liderId   String    @unique 
 
   // Ligaçao com a classe Aluno Para os instegrantes do grupo com uma relação -> um-para-muitos
-  alunos Aluno[] @relation("Composicao")
+  alunos  Aluno[]     @relation("Composicao")
 
   // Ligaçao com a classe Estande com uma relacao -> um-para-muitos
-  estande Estande @relation(fields: [estandeId], references: [idEstande])
-  estandeId String
+  estande Estande     @relation(fields: [estandeId], references: [idEstande])
+  estandeId  String
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -134,7 +134,7 @@ model Estande {
   notaGrupoAlunos      Float
   
   // Ligaçao com a classe Grupo com uma relacao -> um-para-muitos
-  grupo Grupo[]
+  grupo       Grupo[]
   
   // Ligaçao com a classe Avaliacao com uma relação -> muitos-para-muitos
   avaliacoes  AvaliacaoOnEstande[]
