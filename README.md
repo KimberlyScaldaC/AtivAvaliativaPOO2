@@ -7,3 +7,14 @@
 
 
 troca a matricula para string
+
+starbootstrap
+https://icons.getbootstrap.com/
+https://icons.getbootstrap.com/icons/align-bottom/
+https://getbootstrap.com/docs/4.0/components/buttons/
+
+
+https://getbootstrap.com/docs/4.0/components/modal/
+https://getbootstrap.com/docs/4.0/components/forms/
+
+coloca ejs
