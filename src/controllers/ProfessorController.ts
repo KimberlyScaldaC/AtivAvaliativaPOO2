@@ -45,16 +45,28 @@ class ProfessorController{
     }
 
     async deleteProfessor(req: Request, res: Response){
-        const idProfessor : Prisma.ProfessorCreateInput = req.body;
-        await ProfessorService.deleteProfessor(idProfessor);
-        // serve para deletar  as informações
-        res.send('Deleta Usuario');
+        const { idProfessor } = req.body;
+    
+        if (idProfessor) {
+            await ProfessorService.deleteProfessor(idProfessor);
+            res.status(200).json({
+                status: 'ok',
+                message: 'Professor deletado com sucesso',
+            });
+        } else {
+            res.status(400).json({
+                status: 'error',
+                message: 'É necessário fornecer o idProfessor para deletar',
+            });
+        }
     }
 
     async updateProfessor(req: Request, res: Response){
         // serve para atualizar as informações
         res.send('Atualizar Usuarios');
     }
+
+    
 }
 
 export default new ProfessorController;
