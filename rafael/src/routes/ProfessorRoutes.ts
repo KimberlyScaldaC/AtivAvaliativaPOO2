@@ -1,15 +1,21 @@
-import { Router } from "express";
-import ProfessorController from "../controllers/ProfessorController";
+import { Router, Response, Request } from "express";
 
 const ProfessorRouter = Router();
 
-//get pegar as coisas no servido
-ProfessorRouter.get("/professores", ProfessorController.listProfessores);
+ProfessorRouter.get("/professor", function (Req: Request, res: Response){
+    res.send("Requisição GET de professores");
+});
  
-ProfessorRouter.post("/professor", ProfessorController.createProfessor);
+ProfessorRouter.post("/professor", function (Req: Request, res: Response){
+    res.send("Requisição POST de professores");
+});
 
-ProfessorRouter.put("/professor", ProfessorController.updateProfessor);
+ProfessorRouter.put("/professor", function (Req: Request, res: Response){
+    res.send("Requisição PUT de professores");
+});
 
-ProfessorRouter.delete("/professor", ProfessorController.deleteProfessor);
+ProfessorRouter.delete("/professor", function (Req: Request, res: Response){
+    res.send("Requisição DELETE de professores");
+});
 
 export default ProfessorRouter;
